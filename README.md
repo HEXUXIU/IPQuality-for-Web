@@ -30,25 +30,9 @@
 
 ### 后端部署 (Cloudflare Worker)
 
-后端Worker现在位于独立的仓库中：[ip-quality-for-web-api](https://github.com/HEXUXIU/ip-quality-for-web-api)
+后端Worker位于独立的仓库中：[ip-quality-for-web-api](https://github.com/HEXUXIU/ip-quality-for-web-api)
 
-1. 克隆后端仓库：
-   ```bash
-   git clone https://github.com/HEXUXIU/ip-quality-for-web-api.git
-   cd ip-quality-for-web-api
-   ```
-2. 登录Cloudflare仪表板
-3. 选择"Workers & Pages" > "Create application" > "Create Worker"
-4. 输入Worker名称（如`ip-quality-worker`）
-5. 点击"Deploy"创建Worker
-6. 创建完成后，进入Worker设置页面
-7. 在"Settings"选项卡中，添加以下环境变量：
-   - `IPQS_KEY` - IPQualityScore API密钥（可选）
-   - `IPDATA_KEY` - ipdata.co API密钥（可选）
-   - `ABUSEIPDB_KEY` - AbuseIPDB API密钥（可选）
-8. 在"Quick Edit"中替换默认代码为`worker.js`文件的内容
-9. 点击"Save and Deploy"保存并部署
-10. 记录Worker的URL（如`https://your-worker.your-subdomain.workers.dev`）
+请参考后端仓库的README.md文件获取详细的部署说明。
 
 ### 前端部署 (Cloudflare Pages)
 
