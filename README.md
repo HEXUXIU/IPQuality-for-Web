@@ -1,5 +1,4 @@
-# IPQuality for Web - 基于AI生成的IP质量查询系统
-
+# IPQuality for Web - 一个基于Web的IP质量查询工具。
 本项目是一个现代化的IP地址质量检测工具，提供地理位置、网络安全风险、网络服务可用性等全面信息。它基于AI生成，并借鉴了 [xykt/IPQuality](https://github.com/xykt/IPQuality) 的设计思路，目的是使无法使用该脚本的系统也可以部分达到该效果。原项目采用 AGPL-3.0 许可证，感谢 IPQuality 脚本的作者。
 
 ## 功能特性
