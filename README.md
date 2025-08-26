@@ -19,8 +19,80 @@
 - **路由**: Vue Router
 - **地图服务**: Leaflet + Google Maps/高德地图
 - **样式**: SCSS + CSS Modules
-- **部署**: Cloudflare Pages
+- **部署**: Cloudflare Pages + Cloudflare Workers
 - **API通信**: Axios
+
+## 部署指南
+
+### 部署顺序
+
+**重要**: 必须先部署后端Worker，再部署前端Pages，因为前端需要Worker的URL。
+
+### 后端部署 (Cloudflare Worker)
+
+1. 登录Cloudflare仪表板
+2. 选择"Workers & Pages" > "Create application" > "Create Worker"
+3. 输入Worker名称（如`ip-quality-worker`）
+4. 点击"Deploy"创建Worker
+5. 创建完成后，进入Worker设置页面
+6. 在"Settings"选项卡中，添加以下环境变量：
+   - `IPQS_KEY` - IPQualityScore API密钥（可选）
+   - `IPDATA_KEY` - ipdata.co API密钥（可选）
+   - `ABUSEIPDB_KEY` - AbuseIPDB API密钥（可选）
+7. 在"Quick Edit"中替换默认代码为本项目中的`worker.js`内容
+8. 点击"Save and Deploy"保存并部署
+9. 记录Worker的URL（如`https://your-worker.your-subdomain.workers.dev`）
+
+### 前端部署 (Cloudflare Pages)
+
+1. 确保已部署后端Worker并获得Worker URL
+2. 将代码推送到GitHub仓库
+3. 登录Cloudflare仪表板
+4. 选择"Workers & Pages" > "Create application" > "Pages"
+5. 点击"Connect to Git"并选择您的仓库
+6. 配置项目设置：
+   - Project name: `ip-quality-frontend`
+   - Production branch: `main`
+7. 配置构建设置：
+   - Build command: `npm run build`
+   - Build output directory: `dist`
+8. 添加环境变量（在"Advanced settings"中）：
+   - `VITE_WORKER_URL` - 你的Worker URL（必须）
+   - `VITE_GOOGLE_MAPS_API_KEY` - Google Maps API密钥（可选，国际用户）
+   - `VITE_AMAP_API_KEY` - 高德地图API密钥（可选，中国用户）
+9. 点击"Save and Deploy"
+
+### 本地开发
+
+```bash
+# 克隆项目
+git clone <repository-url>
+cd ip-quality-frontend
+
+# 安装依赖
+npm install
+
+# 启动开发服务器
+npm run dev
+
+# 构建生产版本
+npm run build
+
+# 预览生产构建
+npm run preview
+```
+
+## 环境变量配置
+
+创建 `.env` 文件并添加以下变量：
+
+```env
+VITE_WORKER_URL=https://your-worker.your-subdomain.workers.dev
+VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
+VITE_AMAP_API_KEY=your_amap_api_key
+```
+
+参考 `.env.example` 文件获取完整示例。
 
 ## 项目结构
 
@@ -42,107 +114,6 @@ ip-quality-frontend/
 ├── vite.config.js         # Vite配置
 └── package.json           # 项目依赖
 ```
-
-## 部署到Cloudflare Pages
-
-### 前置条件
-
-1. GitHub账户
-2. Cloudflare账户
-3. API密钥（可选）：
-   - Google Maps API密钥（国际用户）
-   - 高德地图API密钥（中国用户）
-
-### 部署步骤
-
-1. **克隆项目**
-   ```bash
-   git clone <repository-url>
-   cd ip-quality-frontend
-   ```
-
-2. **安装依赖**
-   ```bash
-   npm install
-   ```
-
-3. **本地开发**
-   ```bash
-   npm run dev
-   ```
-
-4. **构建项目**
-   ```bash
-   npm run build
-   ```
-
-5. **部署到Cloudflare Pages**
-   - 将代码推送到GitHub仓库
-   - 登录Cloudflare仪表板
-   - 选择"Workers & Pages" > "Create application" > "Pages"
-   - 点击"Connect to Git"并选择您的仓库
-   - 配置项目设置：
-     - Project name: `ip-quality-check`
-     - Production branch: `main`
-   - 配置构建设置：
-     - Build command: `npm run build`
-     - Build output directory: `dist`
-   - 添加环境变量（在"Advanced settings"中）：
-     - `VITE_WORKER_URL` - 您的Worker URL
-     - `VITE_GOOGLE_MAPS_API_KEY` - Google Maps API密钥（可选）
-     - `VITE_AMAP_API_KEY` - 高德地图API密钥（可选）
-   - 点击"Save and Deploy"
-
-### 环境变量配置
-
-创建 `.env` 文件并添加以下变量：
-
-```env
-VITE_WORKER_URL=https://your-worker.your-subdomain.workers.dev
-VITE_GOOGLE_MAPS_API_KEY=your_google_maps_api_key
-VITE_AMAP_API_KEY=your_amap_api_key
-```
-
-参考 `.env.example` 文件获取完整示例。
-
-## 开发指南
-
-### 项目设置
-
-```bash
-# 克隆项目
-git clone <repository-url>
-cd ip-quality-frontend
-
-# 安装依赖
-npm install
-
-# 启动开发服务器
-npm run dev
-
-# 构建生产版本
-npm run build
-
-# 预览生产构建
-npm run preview
-```
-
-### 代码规范
-
-- 使用ESLint和Prettier保持代码风格一致
-- 遵循Vue.js风格指南
-- 组件命名使用PascalCase
-- 文件命名使用kebab-case
-
-### 目录说明
-
-- `src/assets/` - 静态资源（图片、字体等）
-- `src/components/` - 可复用的Vue组件
-- `src/views/` - 页面级组件
-- `src/router/` - 路由配置
-- `src/store/` - 状态管理
-- `src/utils/` - 工具函数
-- `src/styles/` - 全局样式文件
 
 ## API集成
 
