@@ -1,0 +1,5 @@
+name = "ip-quality-frontend"
+compatibility_date = "2023-09-01"
+
+[build]
+command = "npm run build"
