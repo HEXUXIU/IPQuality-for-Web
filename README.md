@@ -30,18 +30,25 @@
 
 ### 后端部署 (Cloudflare Worker)
 
-1. 登录Cloudflare仪表板
-2. 选择"Workers & Pages" > "Create application" > "Create Worker"
-3. 输入Worker名称（如`ip-quality-worker`）
-4. 点击"Deploy"创建Worker
-5. 创建完成后，进入Worker设置页面
-6. 在"Settings"选项卡中，添加以下环境变量：
+后端Worker现在位于独立的仓库中：[ip-quality-for-web-api](https://github.com/HEXUXIU/ip-quality-for-web-api)
+
+1. 克隆后端仓库：
+   ```bash
+   git clone https://github.com/HEXUXIU/ip-quality-for-web-api.git
+   cd ip-quality-for-web-api
+   ```
+2. 登录Cloudflare仪表板
+3. 选择"Workers & Pages" > "Create application" > "Create Worker"
+4. 输入Worker名称（如`ip-quality-worker`）
+5. 点击"Deploy"创建Worker
+6. 创建完成后，进入Worker设置页面
+7. 在"Settings"选项卡中，添加以下环境变量：
    - `IPQS_KEY` - IPQualityScore API密钥（可选）
    - `IPDATA_KEY` - ipdata.co API密钥（可选）
    - `ABUSEIPDB_KEY` - AbuseIPDB API密钥（可选）
-7. 在"Quick Edit"中替换默认代码为本项目中的`worker.js`内容
-8. 点击"Save and Deploy"保存并部署
-9. 记录Worker的URL（如`https://your-worker.your-subdomain.workers.dev`）
+8. 在"Quick Edit"中替换默认代码为`worker.js`文件的内容
+9. 点击"Save and Deploy"保存并部署
+10. 记录Worker的URL（如`https://your-worker.your-subdomain.workers.dev`）
 
 ### 前端部署 (Cloudflare Pages)
 
@@ -66,7 +73,7 @@
 
 ```bash
 # 克隆项目
-git clone <repository-url>
+git clone https://github.com/HEXUXIU/IPQuality-for-Web.git
 cd ip-quality-frontend
 
 # 安装依赖
